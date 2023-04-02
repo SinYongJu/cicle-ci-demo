@@ -18,8 +18,9 @@ jobs:
           override-installed: false 
           aws-access-key-id: AWS_ACCESS_KEY 
           aws-region: AWS_DEFAULT_REGION 
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY 
-
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      - run:
+          command: "echo hou!!"
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
@@ -27,9 +28,5 @@ workflows:
     jobs:
       - say-hello:
           context: test
-      - run:
-          name: "connct and clone"
-          command: "git clone https://github.com/SinYongJu/cicle-ci-demo.git"
-    
 
 
