@@ -20,7 +20,7 @@ jobs:
           aws-region: AWS_DEFAULT_REGION 
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
       - run:
-          command: "echo hou!!"
+          command: "git clone https://github.com/SinYongJu/cicle-ci-demo.git"
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
