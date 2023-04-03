@@ -26,7 +26,7 @@ jobs:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
       - run:
           name: Login to DockerHub
-          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+          command: docker login -u $DOCKER_ID -p $DOCKER_PASSWORD
       - run:
           command: docker pull myspring:latest
       - run:
@@ -52,7 +52,7 @@ jobs:
           command: ./gradlew build
       - run:
           name: Login to DockerHub
-          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+          command: docker login -u $DOCKER_ID -p $DOCKER_PASSWORD
       - run:
           name: docker image build
           command: docker build -t myspring:latest .
