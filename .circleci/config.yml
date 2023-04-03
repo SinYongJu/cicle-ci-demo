@@ -27,7 +27,7 @@ jobs:
       - run:
           name: Login to DockerHub
           command: |
-            sudo docker service start
+            sudo service docker start
       - run:
           command: docker login -u $DOCKER_ID -p $DOCKER_PASSWORD
       - run:
