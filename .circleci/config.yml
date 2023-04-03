@@ -34,7 +34,7 @@ jobs:
   build-prj:
     docker:
       - image: circleci/openjdk:17-jdk-buster
-      - image: cimg/base:2022.06
+      - image: cimg/base:2023.04
         auth:
             username: $DOCKERHUB_PASSWORD
             password: $DOCKER_ID
@@ -72,7 +72,7 @@ workflows:
   say-hello-workflow:
     jobs:
       - build-prj:
-          context: test 
+          context: test
       - say-hello:
           requires:
             - build-prj
