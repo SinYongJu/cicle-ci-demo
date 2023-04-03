@@ -58,6 +58,7 @@ jobs:
       # - run:
       #     command: sudo /etc/init.d/docker start
       - setup_remote_docker
+
       - run:
           name: docker image build
           command: docker build -t myspring:latest .
