@@ -64,6 +64,8 @@ workflows:
     jobs:
       - build-prj
       - say-hello:
+          requires:
+            - build-prj
           context: test 
    
 
