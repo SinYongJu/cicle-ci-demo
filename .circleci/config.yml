@@ -47,6 +47,8 @@ jobs:
       #       - ~/.gradle
       - checkout
       - run:
+          command: sudo chmod +x ./gradlew
+      - run:
           command: ./gradlew bootRun
       - run:
           name: Login to DockerHub
