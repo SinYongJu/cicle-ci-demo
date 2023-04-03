@@ -34,6 +34,10 @@ jobs:
   build-prj:
     docker:
       - image: circleci/openjdk:17-jdk-buster
+      - image: cimg/base:2022.06
+        auth:
+            username: $DOCKERHUB_PASSWORD
+            password: $DOCKER_ID
     steps:
       # - restore_cache:
       #     keys:
@@ -50,11 +54,12 @@ jobs:
           command: sudo chmod +x ./gradlew
       - run:
           command: ./gradlew build
-      - run:
-          command: sudo /etc/init.d/docker start
-      - run:
-          name: Login to DockerHub
-          command: echo $DOCKER_PASSWORD | docker login --username $DOCKER_ID --password-stdin
+      # - run:
+      #     command: sudo /etc/init.d/docker start
+      - setup_remote_docker
+      # - run:
+      #     name: Login to DockerHub
+      #     command: echo $DOCKER_PASSWORD | docker login --username $DOCKER_ID --password-stdin
       - run:
           name: docker image build
           command: docker build -t myspring:latest .
