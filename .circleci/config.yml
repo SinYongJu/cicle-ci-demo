@@ -26,9 +26,9 @@ jobs:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
       - run:
           command: docker login -u $DOCKER_ID -p $DOCKER_PASSWORD
-      - run:
-          name: Login to DockerHub
-          command: sudo service docker start
+      # - run:
+      #     name: Login to DockerHub
+      #     command: sudo service docker start
       - run:
           command: docker image pull shinyondu/myspring:latest
       - run:
