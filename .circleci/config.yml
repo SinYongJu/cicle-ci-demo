@@ -28,7 +28,7 @@ jobs:
           name: Login to DockerHub
           command: docker login -u $DOCKER_ID -p $DOCKER_PASSWORD
       - run:
-          command: docker pull myspring:latest
+          command: docker image pull myspring:latest
       - run:
           command: docker run -d -p 80:80 myspring:latest
   build-prj:
@@ -36,8 +36,8 @@ jobs:
       - image: circleci/openjdk:17-jdk-buster
       - image: cimg/base:2022.06
         auth:
-          username: $DOCKERHUB_PASSWORD
-          password: $DOCKER_ID
+          username: $DOCKER_ID
+          password: $DOCKERHUB_PASSWORD
     steps:
       # - restore_cache:
       #     keys:
@@ -66,10 +66,10 @@ jobs:
       - run:
           name: docker image tag
           command: docker tag myspring:latest shinyondu/myspring:latest
-      - setup_remote_docker
       - run:
           name: docker image push
-          command: docker push shinyondu/myspring:latest
+          command: | 
+            docker push shinyondu/myspring:latest
 
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
