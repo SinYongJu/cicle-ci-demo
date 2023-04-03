@@ -66,6 +66,7 @@ jobs:
       - run:
           name: docker image tag
           command: docker tag myspring:latest shinyondu/myspring:latest
+      - setup_remote_docker
       - run:
           name: docker image push
           command: docker push shinyondu/myspring:latest
