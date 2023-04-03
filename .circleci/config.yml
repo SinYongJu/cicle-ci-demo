@@ -65,7 +65,7 @@ jobs:
           command: docker build -t myspring:latest .
       - run:
           name: docker image push
-          command: docker push shinyondu/myspring:latest
+          command: docker push myspring:latest
 
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
