@@ -25,10 +25,10 @@ jobs:
           aws-region: AWS_DEFAULT_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
       - run:
+          name: Login to DockerHub
           command: docker login -u $DOCKER_ID -p $DOCKER_PASSWORD
-      # - run:
-      #     name: Login to DockerHub
-      #     command: sudo service docker start
+      - run:
+          command: sudo nohup dockerd >/dev/null 2>&1 &
       - run:
           command: docker image pull shinyondu/myspring:latest
       - run:
