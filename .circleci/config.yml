@@ -64,6 +64,9 @@ jobs:
           name: docker image build
           command: docker build -t myspring:latest .
       - run:
+          name: docker image tag
+          command: docker tag myspring:latest shinyondu/myspring:latest
+      - run:
           name: docker image push
           command: docker push myspring:latest
 
