@@ -2,7 +2,7 @@
 # See: https://circleci.com/docs/configuration-reference
 version: 2.1
 orbs:
-  aws-cli: circleci/aws-cli@2.0.3
+  aws-cli: circleci/aws-cli@3.1.1 # use the AWS CLI orb
 
 # excutors:
 #   jdk17:
@@ -15,23 +15,37 @@ jobs:
     docker:
       # replace with your preferred image
       - image: cimg/base:stable
+      - image: aws-cli
     steps:
+      # - aws-cli/setup:
+      #     configure-default-region: true
+      #     configure-profile-region: true
+      #     disable-aws-pager: true
+      #     override-installed: false
+      #     aws-access-key-id: AWS_ACCESS_KEY
+      #     aws-region: AWS_DEFAULT_REGION
+      #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      # - run:
+      #     name: Login to DockerHub
+      #     command: docker login -u $DOCKER_ID -p $DOCKER_PASSWORD
+      # - run:
+      #     command: docker image pull shinyondu/myspring:latest
+      # - run:
+      #     command: docker run -d -p 80:8080 shinyondu/myspring:latest
+      - aws-cli/install
       - aws-cli/setup:
-          configure-default-region: true
-          configure-profile-region: true
-          disable-aws-pager: true
-          override-installed: false
-          aws-access-key-id: AWS_ACCESS_KEY
+          aws-access-key-id: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_DEFAULT_REGION
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-      - setup_remote_docker
+          aws-secret-access-key: AWS_DEFAULT_REGION
       - run:
-          name: Login to DockerHub
-          command: docker login -u $DOCKER_ID -p $DOCKER_PASSWORD
-      - run:
-          command: docker image pull shinyondu/myspring:latest
-      - run:
-          command: docker run -d -p 80:8080 shinyondu/myspring:latest
+          name: Get last task definition
+          command: >
+            TASK_DEFINITION_ARN=$(aws ecs describe-task-definition \
+                --task-definition ${MY_APP_PREFIX}-service \
+                --output text \
+                --query 'taskDefinition.taskDefinitionArn')
+            echo "export TASK_DEFINITION_ARN='${TASK_DEFINITION_ARN}'" >>
+            "$BASH_ENV"
   build-prj:
     docker:
       - image: circleci/openjdk:17-jdk-buster
@@ -58,7 +72,7 @@ jobs:
       # - run:
       #     command: sudo /etc/init.d/docker start
       - setup_remote_docker
-
+      
       - run:
           name: docker image build
           command: docker build -t myspring:latest .
@@ -67,7 +81,7 @@ jobs:
           command: docker tag myspring:latest shinyondu/myspring:latest
       - run:
           name: docker image push
-          command: |
+          command: | 
             echo $DOCKER_PASSWORD | docker login --username $DOCKER_ID --password-stdin
             docker push shinyondu/myspring:latest
 
