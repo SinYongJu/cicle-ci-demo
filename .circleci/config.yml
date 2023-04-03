@@ -54,6 +54,8 @@ jobs:
           name: Login to DockerHub
           command: echo $DOCKER_PASSWORD | docker login --username $DOCKER_ID --password-stdin
       - run:
+          command: sudo service docker start
+      - run:
           name: docker image build
           command: docker build -t myspring:latest .
       - run:
