@@ -25,6 +25,9 @@ jobs:
           aws-region: AWS_DEFAULT_REGION 
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
       - run:
+          name: Login to DockerHub
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run:
           command: docker pull myspring:latest
       - run:
           command: docker run -d -p 80:80 myspring:latest
