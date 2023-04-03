@@ -28,7 +28,7 @@ jobs:
           command: docker login -u $DOCKER_ID -p $DOCKER_PASSWORD
       - run:
           name: Login to DockerHub
-          command: docker start
+          command: sudo service docker start
       - run:
           command: docker image pull shinyondu/myspring:latest
       - run:
