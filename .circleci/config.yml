@@ -26,11 +26,13 @@ jobs:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
       - run:
           name: Login to DockerHub
-          command: docker login -u $DOCKER_ID -p $DOCKER_PASSWORD
+          command: |
+            sudo docker service start
+            docker login -u $DOCKER_ID -p $DOCKER_PASSWORD
       - run:
-          command: docker image pull myspring:latest
+          command: docker image pull shinyondu/myspring:latest
       - run:
-          command: docker run -d -p 80:80 myspring:latest
+          command: docker run -d -p 80:80 shinyondu/myspring:latest
   build-prj:
     docker:
       - image: circleci/openjdk:17-jdk-buster
