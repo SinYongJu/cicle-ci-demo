@@ -24,20 +24,21 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY
           aws-region: AWS_DEFAULT_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      - setup_remote_docker
       - run:
           name: Login to DockerHub
           command: docker login -u $DOCKER_ID -p $DOCKER_PASSWORD
       - run:
-          command: docker pull myspring:latest
+          command: docker image pull shinyondu/myspring:latest
       - run:
-          command: docker run -d -p 80:80 myspring:latest
+          command: docker run -d -p 80:8080 shinyondu/myspring:latest
   build-prj:
     docker:
       - image: circleci/openjdk:17-jdk-buster
       - image: cimg/base:2022.06
         auth:
-          username: $DOCKERHUB_PASSWORD
-          password: $DOCKER_ID
+          username: $DOCKER_ID
+          password: $DOCKER_PASSWORD
     steps:
       # - restore_cache:
       #     keys:
@@ -57,15 +58,18 @@ jobs:
       # - run:
       #     command: sudo /etc/init.d/docker start
       - setup_remote_docker
-      # - run:
-      #     name: Login to DockerHub
-      #     command: echo $DOCKER_PASSWORD | docker login --username $DOCKER_ID --password-stdin
+
       - run:
           name: docker image build
           command: docker build -t myspring:latest .
       - run:
+          name: docker image tag
+          command: docker tag myspring:latest shinyondu/myspring:latest
+      - run:
           name: docker image push
-          command: docker push myspring:latest
+          command: |
+            echo $DOCKER_PASSWORD | docker login --username $DOCKER_ID --password-stdin
+            docker push shinyondu/myspring:latest
 
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
