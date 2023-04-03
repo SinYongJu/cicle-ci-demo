@@ -51,7 +51,7 @@ jobs:
       - run:
           command: ./gradlew build
       - run:
-          command: sudo service docker start
+          command: sudo /etc/init.d/docker start
       - run:
           name: Login to DockerHub
           command: echo $DOCKER_PASSWORD | docker login --username $DOCKER_ID --password-stdin
