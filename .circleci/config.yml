@@ -68,7 +68,7 @@ jobs:
           command: docker tag myspring:latest shinyondu/myspring:latest
       - run:
           name: docker image push
-          command: docker push myspring:latest
+          command: docker push shinyondu/myspring:latest
 
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
