@@ -3,6 +3,11 @@
 version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@2.0.3
+
+# excutors: 
+#   jdk17:
+#      docker:
+#       - image: circleci/openjdk:17-jdk-buster
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
@@ -20,13 +25,42 @@ jobs:
           aws-region: AWS_DEFAULT_REGION 
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
       - run:
-          command: "git clone https://github.com/SinYongJu/cicle-ci-demo.git"
-# Orchestrate jobs using workflows
+          command: docker pull myspring:latest
+      - run:
+          command: docker run -d -p 80:80 myspring:latest
+  build-prj:
+    docker:
+      - image: circleci/openjdk:17-jdk-buster
+    steps:
+      # - restore_cache:
+      #     keys:
+      #       - v1-dependencies-{{ checksum "build.gradle" }}
+      #       - v1-dependencies-
+      # - run:
+      #     command: ./gradlew dependencies
+      # - save_cache:
+      #     key: v1-dependencies-{{ checksum "build.gradle" }}
+      #     paths:
+      #       - ~/.gradle
+      - checkout
+      - run:
+          command: ./gradlew bootRun
+      - run:
+          name: Login to DockerHub
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run:
+          name: docker image build
+          command: docker build -t myspring:latest .
+      - run:
+          name: docker image push
+          command: docker push myspring/latest
+
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
   say-hello-workflow:
     jobs:
+      - build-prj
       - say-hello:
-          context: test
-
+          context: test 
+   
 
