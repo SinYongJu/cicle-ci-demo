@@ -26,8 +26,7 @@ jobs:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
       - run:
           name: Login to DockerHub
-          command: |
-            sudo service docker start
+          command: docker start
       - run:
           command: docker login -u $DOCKER_ID -p $DOCKER_PASSWORD
       - run:
