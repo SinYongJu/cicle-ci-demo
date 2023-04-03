@@ -18,13 +18,13 @@ jobs:
     #   - image: aws-cli
     steps:
       # - aws-cli/setup:
-      #     configure-default-region: true
-      #     configure-profile-region: true
-      #     disable-aws-pager: true
-      #     override-installed: false
-      #     aws-access-key-id: AWS_ACCESS_KEY
-      #     aws-region: AWS_DEFAULT_REGION
-      #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          # configure-default-region: true
+          # configure-profile-region: true
+          # disable-aws-pager: true
+          # override-installed: false
+          # aws-access-key-id: AWS_ACCESS_KEY
+          # aws-region: AWS_DEFAULT_REGION
+          # aws-secret-access-key: AWS_SECRET_ACCESS_KEY
       # - run:
       #     name: Login to DockerHub
       #     command: docker login -u $DOCKER_ID -p $DOCKER_PASSWORD
@@ -33,7 +33,11 @@ jobs:
       # - run:
       #     command: docker run -d -p 80:8080 shinyondu/myspring:latest
       - aws-cli/install
-      - aws-cli/setup:
+      - aws-cli/setup:   
+          configure-default-region: true
+          configure-profile-region: true
+          disable-aws-pager: true
+          override-installed: false
           aws-access-key-id: AWS_ACCESS_KEY
           aws-region: AWS_DEFAULT_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
