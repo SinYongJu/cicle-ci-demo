@@ -49,7 +49,7 @@ jobs:
       - run:
           command: sudo chmod +x ./gradlew
       - run:
-          command: ./gradlew bootRun
+          command: ./gradlew build
       - run:
           name: Login to DockerHub
           command: docker login -u $DOCKER_USER -p $DOCKER_PASS
