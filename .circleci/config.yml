@@ -11,10 +11,11 @@ orbs:
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
   say-hello:
-    docker:
-      # replace with your preferred image
-      # - image: cimg/base:stable
-      - image: aws-cli
+    executor: aws-cli/default
+    # docker:
+    #   # replace with your preferred image
+    #   # - image: cimg/base:stable
+    #   - image: aws-cli
     steps:
       # - aws-cli/setup:
       #     configure-default-region: true
