@@ -38,7 +38,7 @@ jobs:
           configure-profile-region: true
           disable-aws-pager: true
           override-installed: false
-          aws-access-key-id: AWS_ACCESS_KEY
+          aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-region: AWS_DEFAULT_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
       - run:
