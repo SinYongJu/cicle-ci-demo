@@ -53,7 +53,7 @@ jobs:
       - run:
           command: sudo chmod +x ./gradlew
       - run:
-          command: gradle build
+          command: ./gradlew build
       # - run:
       #     command: sudo /etc/init.d/docker start
       - setup_remote_docker
