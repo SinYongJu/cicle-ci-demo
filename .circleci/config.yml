@@ -52,7 +52,7 @@ jobs:
           command: ./gradlew build
       - run:
           name: Login to DockerHub
-          command: docker login -u $DOCKER_ID -p $DOCKER_PASSWORD
+          command: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-
       - run:
           name: docker image build
           command: docker build -t myspring:latest .
