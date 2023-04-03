@@ -3,6 +3,11 @@
 version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@2.0.3
+
+# excutors:
+#   jdk17:
+#      docker:
+#       - image: circleci/openjdk:17-jdk-buster
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
@@ -12,21 +17,63 @@ jobs:
       - image: cimg/base:stable
     steps:
       - aws-cli/setup:
-          configure-default-region: true 
-          configure-profile-region: true 
-          disable-aws-pager: true 
-          override-installed: false 
-          aws-access-key-id: AWS_ACCESS_KEY 
-          aws-region: AWS_DEFAULT_REGION 
+          configure-default-region: true
+          configure-profile-region: true
+          disable-aws-pager: true
+          override-installed: false
+          aws-access-key-id: AWS_ACCESS_KEY
+          aws-region: AWS_DEFAULT_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
       - run:
-          command: "git clone https://github.com/SinYongJu/cicle-ci-demo.git"
-# Orchestrate jobs using workflows
+          name: Login to DockerHub
+          command: docker login -u $DOCKER_ID -p $DOCKER_PASSWORD
+      - run:
+          command: docker pull myspring:latest
+      - run:
+          command: docker run -d -p 80:80 myspring:latest
+  build-prj:
+    docker:
+      - image: circleci/openjdk:17-jdk-buster
+      - image: cimg/base:2022.06
+        auth:
+          username: $DOCKERHUB_PASSWORD
+          password: $DOCKER_ID
+    steps:
+      # - restore_cache:
+      #     keys:
+      #       - v1-dependencies-{{ checksum "build.gradle" }}
+      #       - v1-dependencies-
+      # - run:
+      #     command: ./gradlew dependencies
+      # - save_cache:
+      #     key: v1-dependencies-{{ checksum "build.gradle" }}
+      #     paths:
+      #       - ~/.gradle
+      - checkout
+      - run:
+          command: sudo chmod +x ./gradlew
+      - run:
+          command: ./gradlew build
+      # - run:
+      #     command: sudo /etc/init.d/docker start
+      - setup_remote_docker
+      # - run:
+      #     name: Login to DockerHub
+      #     command: echo $DOCKER_PASSWORD | docker login --username $DOCKER_ID --password-stdin
+      - run:
+          name: docker image build
+          command: docker build -t myspring:latest .
+      - run:
+          name: docker image push
+          command: docker push myspring/latest
+
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
   say-hello-workflow:
     jobs:
-      - say-hello:
+      - build-prj:
           context: test
-
-
+      - say-hello:
+          requires:
+            - build-prj
+          context: test
